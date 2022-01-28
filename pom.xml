@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>ir.snapp.pay</groupId>
+    <artifactId>snaplitto</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <description>Sharing bills with friends</description>
+    <packaging>jar</packaging>
+
+    <licenses>
+        <license>
+            <name>Snapp License</name>
+            <url>https://snapp.ir/</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>ehsan.odyssey</id>
+            <email>ehsan.odysseyb@gmail.com</email>
+            <name>AmirEhsan Shamirzaloo</name>
+            <timezone>Asia/Tehran</timezone>
+            <roles>
+                <role>Back-End Developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <properties>
+        <java.version>11</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+</project>
