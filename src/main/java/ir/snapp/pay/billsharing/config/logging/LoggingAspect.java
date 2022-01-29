@@ -88,4 +88,16 @@ public class LoggingAspect {
             throw e;
         }
     }
+
+    @Around("@annotation(ir.snapp.pay.billsharing.config.logging.LogExecutionTime)")
+    public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
+        final long startMillis = System.currentTimeMillis();
+        Object result = joinPoint.proceed();
+        final long executionTimeMillis = System.currentTimeMillis() - startMillis;
+        logger.info("{} > {}() executed in --> {} ms",
+                joinPoint.getSignature().getDeclaringTypeName(),
+                joinPoint.getSignature().getName(),
+                executionTimeMillis);
+        return result;
+    }
 }
