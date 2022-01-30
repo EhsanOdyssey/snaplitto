@@ -1,0 +1,14 @@
+${AnsiColor.CYAN}***************************************************************
+${AnsiColor.CYAN}***************************************************************
+${AnsiColor.CYAN}***${AnsiColor.MAGENTA}      _____                         _ _ _   _            ${AnsiColor.CYAN}***
+${AnsiColor.CYAN}***${AnsiColor.MAGENTA}     /  ___|                       | (_) | | |           ${AnsiColor.CYAN}***
+${AnsiColor.CYAN}***${AnsiColor.MAGENTA}     \ `--. _ __   __ _ _ __  _ __ | |_| |_| |_ ___      ${AnsiColor.CYAN}***
+${AnsiColor.CYAN}***${AnsiColor.MAGENTA}      `--. \ '_ \ / _` | '_ \| '_ \| | | __| __/ _ \     ${AnsiColor.CYAN}***
+${AnsiColor.CYAN}***${AnsiColor.MAGENTA}     /\__/ / | | | (_| | |_) | |_) | | | |_| || (_) |    ${AnsiColor.CYAN}***
+${AnsiColor.CYAN}***${AnsiColor.MAGENTA}     \____/|_| |_|\__,_| .__/| .__/|_|_|\__|\__\___/     ${AnsiColor.CYAN}***
+${AnsiColor.CYAN}***${AnsiColor.MAGENTA}                       | |   | |                         ${AnsiColor.CYAN}***
+${AnsiColor.CYAN}***${AnsiColor.MAGENTA}                       |_|   |_|                         ${AnsiColor.CYAN}***
+${AnsiColor.CYAN}***                                                         ***
+${AnsiColor.CYAN}***    Powered by EhsanOdyssey! with Spring Boot - ${spring-boot.version}    ***
+${AnsiColor.CYAN}***************************************************************
+${AnsiColor.CYAN}***************************************************************
