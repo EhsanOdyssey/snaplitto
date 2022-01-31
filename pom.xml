@@ -30,10 +30,26 @@
         </developer>
     </developers>
 
+    <scm>
+        <url>https://github.com/EhsanOdyssey/snaplitto</url>
+        <connection>scm:git:git//github.com/EhsanOdyssey/snaplitto.git</connection>
+        <developerConnection>scm:git:git//github.com/EhsanOdyssey/snaplitto.git</developerConnection>
+    </scm>
+
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/EhsanOdyssey/snaplitto/issues</url>
+    </issueManagement>
+
     <properties>
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <docker.image.prefix>snapp-pay</docker.image.prefix>
+        <github.global.server>github</github.global.server>
+        <!--suppress UnresolvedMavenProperty -->
+        <github.global.oauth2Token>${env.GITHUB_OAUTH_TOKEN}</github.global.oauth2Token>
+
         <spring-boot.version>2.5.1</spring-boot.version>
         <springdoc.version>1.5.2</springdoc.version>
     </properties>
@@ -132,19 +148,23 @@
             <plugin>
                 <groupId>com.spotify</groupId>
                 <artifactId>dockerfile-maven-plugin</artifactId>
-                <version>1.4.3</version>
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>default</id>-->
-<!--                        <goals>-->
-<!--                            <goal>build</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
+                <version>1.4.9</version>
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>build</goal>
+                            <goal>push</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
 <!--                    <contextDirectory>${project.basedir}</contextDirectory>-->
-                    <repository>snapp-pay/${project.artifactId}</repository>
+                    <repository>${docker.image.prefix}/${project.artifactId}</repository>
                     <tag>${project.version}</tag>
+                    <serverId>index.docker.io</serverId>
+                    <registeryUrl>https://index.docker.io:443/v1/</registeryUrl>
                     <buildArgs>
                         <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
                     </buildArgs>
