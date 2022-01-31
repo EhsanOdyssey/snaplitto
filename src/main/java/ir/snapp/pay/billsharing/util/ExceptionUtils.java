@@ -1,7 +1,7 @@
 package ir.snapp.pay.billsharing.util;
 
 import ir.snapp.pay.billsharing.exception.ServiceException;
-import ir.snapp.pay.billsharing.exception.dto.ExceptionResponseDTO;
+import ir.snapp.pay.billsharing.dto.response.ExceptionResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.web.context.request.WebRequest;
@@ -18,8 +18,8 @@ public final class ExceptionUtils {
 
     private ExceptionUtils() {}
 
-    public static ExceptionResponseDTO makeExceptionResponseFromBindException(BindException ex, WebRequest request) {
-        ExceptionResponseDTO exceptionResponse = new ExceptionResponseDTO();
+    public static ExceptionResponseDto makeExceptionResponseFromBindException(BindException ex, WebRequest request) {
+        ExceptionResponseDto exceptionResponse = new ExceptionResponseDto();
         ex.getBindingResult().getFieldErrors()
                 .forEach(e -> exceptionResponse.addError(e.getField(), e.getDefaultMessage()));
         ex.getBindingResult().getGlobalErrors()
@@ -29,8 +29,8 @@ public final class ExceptionUtils {
         return exceptionResponse;
     }
 
-    public static ExceptionResponseDTO makeExceptionResponseFromConstraintViolation(ConstraintViolationException ex, WebRequest request) {
-        ExceptionResponseDTO exceptionResponse = new ExceptionResponseDTO();
+    public static ExceptionResponseDto makeExceptionResponseFromConstraintViolation(ConstraintViolationException ex, WebRequest request) {
+        ExceptionResponseDto exceptionResponse = new ExceptionResponseDto();
         ex.getConstraintViolations()
                 .forEach(e -> exceptionResponse.addError(e.getPropertyPath().toString(), e.getMessage()));
         exceptionResponse.setPath(request.getContextPath());
@@ -38,16 +38,16 @@ public final class ExceptionUtils {
         return exceptionResponse;
     }
 
-    public static ExceptionResponseDTO makeExceptionResponse(String message, Map<String, String> errors, String path) {
-        ExceptionResponseDTO exceptionResponse = new ExceptionResponseDTO();
+    public static ExceptionResponseDto makeExceptionResponse(String message, Map<String, String> errors, String path) {
+        ExceptionResponseDto exceptionResponse = new ExceptionResponseDto();
         exceptionResponse.setMessage(message);
         exceptionResponse.setErrors(errors);
         exceptionResponse.setPath(path);
         return exceptionResponse;
     }
 
-    public static ExceptionResponseDTO convertToExceptionResponse(ServiceException ex, WebRequest request) {
-        ExceptionResponseDTO exceptionResponse = new ExceptionResponseDTO();
+    public static ExceptionResponseDto convertToExceptionResponse(ServiceException ex, WebRequest request) {
+        ExceptionResponseDto exceptionResponse = new ExceptionResponseDto();
         exceptionResponse.setMessage(ex.getMessage());
         exceptionResponse.setErrors(ex.getDetails());
         exceptionResponse.setPath(request.getContextPath());

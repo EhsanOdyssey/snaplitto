@@ -1,4 +1,4 @@
-package ir.snapp.pay.billsharing.exception.dto;
+package ir.snapp.pay.billsharing.dto.response;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,13 +15,13 @@ import java.util.*;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ExceptionResponseDTO implements Serializable {
+public class ExceptionResponseDto implements Serializable {
 
     private String path;
     private String message;
     private Map<String, String> errors;
 
-    public ExceptionResponseDTO(final String path, final String message, final Map<String, String> errors) {
+    public ExceptionResponseDto(final String path, final String message, final Map<String, String> errors) {
         this.path = path;
         this.message = message;
         this.errors = errors;

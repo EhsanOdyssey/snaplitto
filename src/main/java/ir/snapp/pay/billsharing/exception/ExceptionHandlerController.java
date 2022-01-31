@@ -1,6 +1,6 @@
 package ir.snapp.pay.billsharing.exception;
 
-import ir.snapp.pay.billsharing.exception.dto.ExceptionResponseDTO;
+import ir.snapp.pay.billsharing.dto.response.ExceptionResponseDto;
 import ir.snapp.pay.billsharing.util.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -80,7 +80,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        ExceptionResponseDTO exceptionResponse;
+        ExceptionResponseDto exceptionResponse;
         if (ex.getMostSpecificCause() == null) {
             exceptionResponse = ExceptionUtils.makeExceptionResponse(
                     HttpStatus.BAD_REQUEST.getReasonPhrase(),
@@ -117,8 +117,8 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ExceptionResponseDTO> handleBadRequest(DataIntegrityViolationException ex, WebRequest request) {
-        ExceptionResponseDTO exceptionResponse;
+    public ResponseEntity<ExceptionResponseDto> handleBadRequest(DataIntegrityViolationException ex, WebRequest request) {
+        ExceptionResponseDto exceptionResponse;
         if (ex.getMostSpecificCause() == null) {
             exceptionResponse = ExceptionUtils.makeExceptionResponse(
                     HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
@@ -135,18 +135,18 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<ExceptionResponseDTO> handleConstraintViolation(ConstraintViolationException ex, WebRequest request) {
+    public ResponseEntity<ExceptionResponseDto> handleConstraintViolation(ConstraintViolationException ex, WebRequest request) {
         return new ResponseEntity<>(ExceptionUtils.makeExceptionResponseFromConstraintViolation(ex, request), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ServiceException.class)
-    public ResponseEntity<ExceptionResponseDTO> handleServiceException(ServiceException ex, WebRequest request) {
+    public ResponseEntity<ExceptionResponseDto> handleServiceException(ServiceException ex, WebRequest request) {
         return new ResponseEntity<>(ExceptionUtils.convertToExceptionResponse(ex, request), ex.getStatus());
     }
 
     @ExceptionHandler(Throwable.class)
-    public ResponseEntity<ExceptionResponseDTO> handleInternalErrors(Throwable ex, WebRequest request) {
-        ExceptionResponseDTO exceptionResponse = new ExceptionResponseDTO();
+    public ResponseEntity<ExceptionResponseDto> handleInternalErrors(Throwable ex, WebRequest request) {
+        ExceptionResponseDto exceptionResponse = new ExceptionResponseDto();
         exceptionResponse.setMessage(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
         exceptionResponse.addError("cause", ex.getMessage());
         exceptionResponse.setPath(request.getContextPath());
