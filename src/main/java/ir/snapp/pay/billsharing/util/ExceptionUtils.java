@@ -1,10 +1,12 @@
 package ir.snapp.pay.billsharing.util;
 
+import ir.snapp.pay.billsharing.exception.ServiceException;
 import ir.snapp.pay.billsharing.exception.dto.ExceptionResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.web.context.request.WebRequest;
 
+import javax.validation.ConstraintViolationException;
 import java.util.Map;
 
 /**
@@ -27,11 +29,28 @@ public final class ExceptionUtils {
         return exceptionResponse;
     }
 
+    public static ExceptionResponseDTO makeExceptionResponseFromConstraintViolation(ConstraintViolationException ex, WebRequest request) {
+        ExceptionResponseDTO exceptionResponse = new ExceptionResponseDTO();
+        ex.getConstraintViolations()
+                .forEach(e -> exceptionResponse.addError(e.getPropertyPath().toString(), e.getMessage()));
+        exceptionResponse.setPath(request.getContextPath());
+        exceptionResponse.setMessage(HttpStatus.BAD_REQUEST.getReasonPhrase());
+        return exceptionResponse;
+    }
+
     public static ExceptionResponseDTO makeExceptionResponse(String message, Map<String, String> errors, String path) {
         ExceptionResponseDTO exceptionResponse = new ExceptionResponseDTO();
         exceptionResponse.setMessage(message);
         exceptionResponse.setErrors(errors);
         exceptionResponse.setPath(path);
+        return exceptionResponse;
+    }
+
+    public static ExceptionResponseDTO convertToExceptionResponse(ServiceException ex, WebRequest request) {
+        ExceptionResponseDTO exceptionResponse = new ExceptionResponseDTO();
+        exceptionResponse.setMessage(ex.getMessage());
+        exceptionResponse.setErrors(ex.getDetails());
+        exceptionResponse.setPath(request.getContextPath());
         return exceptionResponse;
     }
 }
