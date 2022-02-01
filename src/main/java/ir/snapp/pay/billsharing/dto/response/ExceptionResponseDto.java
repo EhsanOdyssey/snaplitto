@@ -13,20 +13,18 @@ import java.util.*;
  * @project snaplitto
  * @date Mon 31 Jan 2022
  */
-@NoArgsConstructor
 @Getter
 @Setter
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class ExceptionResponseDto implements Serializable {
 
+    private Date timestamp;
     private String path;
     private String message;
     private Map<String, String> errors;
 
-    public ExceptionResponseDto(final String path, final String message, final Map<String, String> errors) {
-        this.path = path;
-        this.message = message;
-        this.errors = errors;
+    public ExceptionResponseDto() {
+        this.timestamp = new Date();
     }
 
     public void addError(String name, String error) {

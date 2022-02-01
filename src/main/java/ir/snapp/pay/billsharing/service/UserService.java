@@ -1,6 +1,11 @@
 package ir.snapp.pay.billsharing.service;
 
 import ir.snapp.pay.billsharing.dto.model.UserDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 /**
  * @author <a href="mailto:ehsan.odyssey@gmail.com">EhsanOdyssey</a>
@@ -9,7 +14,8 @@ import ir.snapp.pay.billsharing.dto.model.UserDto;
  */
 public interface UserService {
     UserDto createUser(UserDto userDto);
-    UserDto updateUser(UserDto userDto);
+    Page<UserDto> getUsers(Pageable pageable);
     UserDto findByUsername(String username);
+    UserDto updateUser(UserDto userDto);
     void deleteUser(String username);
 }
