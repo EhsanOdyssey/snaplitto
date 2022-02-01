@@ -1,6 +1,7 @@
 package ir.snapp.pay.billsharing.controller.v1.request;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import ir.snapp.pay.billsharing.validator.Phone;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,6 +24,7 @@ public class UserSignupRequest implements Serializable {
     @NotEmpty(message = "{constrains.NotEmpty.message}")
     private String id;
     @NotEmpty(message = "{constrains.NotEmpty.message}")
+    @Phone
     private String username;
     @NotEmpty(message = "{constrains.NotEmpty.message}")
     private String firstName;

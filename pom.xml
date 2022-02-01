@@ -36,6 +36,8 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring-boot.version>2.5.1</spring-boot.version>
         <springdoc.version>1.5.2</springdoc.version>
+        <modelmapper.version>2.4.5</modelmapper.version>
+        <libphonenumber.version>8.12.26</libphonenumber.version>
     </properties>
 
     <parent>
@@ -70,7 +72,12 @@
         <dependency>
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
-            <version>2.4.5</version>
+            <version>${modelmapper.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.libphonenumber</groupId>
+            <artifactId>libphonenumber</artifactId>
+            <version>${libphonenumber.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springdoc</groupId>
