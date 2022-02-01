@@ -27,6 +27,8 @@ import javax.validation.ConstraintViolationException;
 import java.util.Map;
 import java.util.Objects;
 
+import static ir.snapp.pay.billsharing.util.ExceptionUtils.getRequestPathFromWebRequest;
+
 /**
  * @author <a href="mailto:ehsan.odyssey@gmail.com">EhsanOdyssey</a>
  * @project snaplitto
@@ -54,7 +56,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
                 ExceptionUtils.makeExceptionResponse(
                         HttpStatus.BAD_REQUEST.getReasonPhrase(),
                         Map.of(Objects.requireNonNull(ex.getPropertyName()), "required type is: " + ex.getRequiredType()),
-                        request.getContextPath()),
+                        getRequestPathFromWebRequest(request)),
                 HttpStatus.BAD_REQUEST);
     }
 
@@ -64,7 +66,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
                 ExceptionUtils.makeExceptionResponse(
                         HttpStatus.BAD_REQUEST.getReasonPhrase(),
                         Map.of(Objects.requireNonNull(ex.getParameterName()), "parameter is missing"),
-                        request.getContextPath()),
+                        getRequestPathFromWebRequest(request)),
                 HttpStatus.BAD_REQUEST);
     }
 
@@ -74,7 +76,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
                 ExceptionUtils.makeExceptionResponse(
                         HttpStatus.NOT_FOUND.getReasonPhrase(),
                         Map.of(ex.getHttpMethod() + " " + ex.getRequestURL(), "no handler found"),
-                        request.getContextPath()),
+                        getRequestPathFromWebRequest(request)),
                 HttpStatus.NOT_FOUND);
     }
 
@@ -85,12 +87,12 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
             exceptionResponse = ExceptionUtils.makeExceptionResponse(
                     HttpStatus.BAD_REQUEST.getReasonPhrase(),
                     Map.of("cause", ex.getMessage()),
-                    request.getContextPath());
+                    getRequestPathFromWebRequest(request));
         } else {
             exceptionResponse = ExceptionUtils.makeExceptionResponse(
                     HttpStatus.BAD_REQUEST.getReasonPhrase(),
                     Map.of(ex.getMostSpecificCause().getClass().getSimpleName(), ex.getMostSpecificCause().getMessage()),
-                    request.getContextPath());
+                    getRequestPathFromWebRequest(request));
         }
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
@@ -101,7 +103,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
                 ExceptionUtils.makeExceptionResponse(
                         HttpStatus.METHOD_NOT_ALLOWED.getReasonPhrase(),
                         Map.of(ex.getMethod(), "method is not supported"),
-                        request.getContextPath()),
+                        getRequestPathFromWebRequest(request)),
                 HttpStatus.METHOD_NOT_ALLOWED);
     }
 
@@ -112,7 +114,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
                 ExceptionUtils.makeExceptionResponse(
                         HttpStatus.UNSUPPORTED_MEDIA_TYPE.getReasonPhrase(),
                         Map.of(mediaType, "media type is not supported"),
-                        request.getContextPath()),
+                        getRequestPathFromWebRequest(request)),
                 HttpStatus.UNSUPPORTED_MEDIA_TYPE);
     }
 
@@ -123,12 +125,12 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
             exceptionResponse = ExceptionUtils.makeExceptionResponse(
                     HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
                     Map.of("cause", ex.getMessage()),
-                    request.getContextPath());
+                    getRequestPathFromWebRequest(request));
         } else {
             exceptionResponse = ExceptionUtils.makeExceptionResponse(
                     HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
                     Map.of(ex.getMostSpecificCause().getClass().getSimpleName(), ex.getMostSpecificCause().getMessage()),
-                    request.getContextPath());
+                    getRequestPathFromWebRequest(request));
         }
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -149,7 +151,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         ExceptionResponseDto exceptionResponse = new ExceptionResponseDto();
         exceptionResponse.setMessage(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
         exceptionResponse.addError("cause", ex.getMessage());
-        exceptionResponse.setPath(request.getContextPath());
+        exceptionResponse.setPath(getRequestPathFromWebRequest(request));
         return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

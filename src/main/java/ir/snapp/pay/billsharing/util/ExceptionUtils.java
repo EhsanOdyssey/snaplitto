@@ -4,6 +4,7 @@ import ir.snapp.pay.billsharing.exception.ServiceException;
 import ir.snapp.pay.billsharing.dto.response.ExceptionResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
+import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.validation.ConstraintViolationException;
@@ -18,13 +19,17 @@ public final class ExceptionUtils {
 
     private ExceptionUtils() {}
 
+    public static String getRequestPathFromWebRequest(WebRequest request) {
+        return ((ServletWebRequest) request).getRequest().getRequestURI();
+    }
+
     public static ExceptionResponseDto makeExceptionResponseFromBindException(BindException ex, WebRequest request) {
         ExceptionResponseDto exceptionResponse = new ExceptionResponseDto();
         ex.getBindingResult().getFieldErrors()
                 .forEach(e -> exceptionResponse.addError(e.getField(), e.getDefaultMessage()));
         ex.getBindingResult().getGlobalErrors()
                 .forEach(e -> exceptionResponse.addError(e.getObjectName(), e.getDefaultMessage()));
-        exceptionResponse.setPath(request.getContextPath());
+        exceptionResponse.setPath(getRequestPathFromWebRequest(request));
         exceptionResponse.setMessage(HttpStatus.BAD_REQUEST.getReasonPhrase());
         return exceptionResponse;
     }
@@ -33,7 +38,7 @@ public final class ExceptionUtils {
         ExceptionResponseDto exceptionResponse = new ExceptionResponseDto();
         ex.getConstraintViolations()
                 .forEach(e -> exceptionResponse.addError(e.getPropertyPath().toString(), e.getMessage()));
-        exceptionResponse.setPath(request.getContextPath());
+        exceptionResponse.setPath(getRequestPathFromWebRequest(request));
         exceptionResponse.setMessage(HttpStatus.BAD_REQUEST.getReasonPhrase());
         return exceptionResponse;
     }
@@ -50,7 +55,7 @@ public final class ExceptionUtils {
         ExceptionResponseDto exceptionResponse = new ExceptionResponseDto();
         exceptionResponse.setMessage(ex.getMessage());
         exceptionResponse.setErrors(ex.getDetails());
-        exceptionResponse.setPath(request.getContextPath());
+        exceptionResponse.setPath(getRequestPathFromWebRequest(request));
         return exceptionResponse;
     }
 }

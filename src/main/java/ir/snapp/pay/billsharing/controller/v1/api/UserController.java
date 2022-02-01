@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import ir.snapp.pay.billsharing.controller.v1.request.UpdateUserProfileRequest;
 import ir.snapp.pay.billsharing.controller.v1.request.UserSignupRequest;
 import ir.snapp.pay.billsharing.dto.model.UserDto;
 import ir.snapp.pay.billsharing.dto.response.ResponseDto;
@@ -40,30 +41,57 @@ public class UserController {
             @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
             @RequestParam(value = "size", defaultValue = "10", required = false) Integer size) {
         return ResponseDto.ok().setPayload(
-                this.userService.getUsers(
-                        PageRequest.of(page, size)
-                )
+                this.userService.getUsers(PageRequest.of(page, size))
         );
     }
 
-    @Operation(summary = "Create user API")
+    @Operation(summary = "Signup new user API")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful response"),
             @ApiResponse(responseCode = "409", description = "duplicate user exception")
     })
     @PostMapping("signup")
     public ResponseDto<?> signup(@RequestBody @Valid UserSignupRequest signupRequest) {
-        return ResponseDto.ok().setPayload(signupUser(signupRequest));
+        return ResponseDto.ok().setPayload(
+                this.userService.createUser(signupRequestToDto(signupRequest))
+        );
     }
 
+    @Operation(summary = "Get user by username API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful response"),
+            @ApiResponse(responseCode = "404", description = "user not found exception")
+    })
+    @GetMapping("{username}")
+    public ResponseDto<?> getUserByUsername(@PathVariable("username") String username) {
+        return ResponseDto.ok().setPayload(this.userService.findByUsername(username));
+    }
 
+    @Operation(summary = "Update user profile API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful response"),
+            @ApiResponse(responseCode = "404", description = "user not found exception")
+    })
+    @PutMapping("{username}")
+    public ResponseDto<?> updateProfile(@PathVariable("username") String username,
+                                        @RequestBody @Valid UpdateUserProfileRequest updateProfile) {
+        return ResponseDto.ok().setPayload(
+                this.userService.updateUser(updateProfileToDto(username, updateProfile))
+        );
+    }
 
-    private UserDto signupUser(UserSignupRequest signupRequest) {
-        UserDto userDto = new UserDto()
+    private UserDto signupRequestToDto(UserSignupRequest signupRequest) {
+        return new UserDto()
                 .setId(signupRequest.getId())
                 .setUsername(signupRequest.getUsername())
                 .setFirstName(signupRequest.getFirstName())
                 .setLastName(signupRequest.getLastName());
-        return this.userService.createUser(userDto);
+    }
+
+    private UserDto updateProfileToDto(String username, UpdateUserProfileRequest updateProfile) {
+        return new UserDto()
+                .setUsername(username)
+                .setFirstName(updateProfile.getFirstName())
+                .setLastName(updateProfile.getLastName());
     }
 }
