@@ -1,5 +1,7 @@
 package ir.snapp.pay.billsharing.service;
 
+import ir.snapp.pay.billsharing.dto.model.UserDto;
+
 /**
  * @author <a href="mailto:ehsan.odyssey@gmail.com">EhsanOdyssey</a>
  * @project snaplitto

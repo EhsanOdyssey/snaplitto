@@ -1,5 +1,6 @@
 package ir.snapp.pay.billsharing.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +16,7 @@ import java.util.*;
 @NoArgsConstructor
 @Getter
 @Setter
+@JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class ExceptionResponseDto implements Serializable {
 
     private String path;
