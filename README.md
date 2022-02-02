@@ -1,7 +1,7 @@
 <h1 align="center">
     <br>
     <a href="https://snapp.ir">
-        <img src="https://github.com/EhsanOdyssey/snaplitto/blob/master/docs/images/snapp.png" alt="Snapp!">
+        <img src="https://github.com/EhsanOdyssey/snaplitto/blob/master/docs/img/snapp.png" alt="Snapp!">
     </a>
     <br>
     Snaplitto REST APIs
