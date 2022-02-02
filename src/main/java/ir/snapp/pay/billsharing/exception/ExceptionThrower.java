@@ -25,7 +25,7 @@ public class ExceptionThrower {
     }
 
     public static ServiceException throwServiceException(HttpStatus status, String messageKey, String... args) {
-        return new ServiceException(messageKey, status, Map.of("detail", getFormattedMessage(messageKey, args)));
+        return new ServiceException(messageKey, status, getFormattedMessage(messageKey, args));
     }
 
     private static String getFormattedMessage(String messageKey, String... args) {

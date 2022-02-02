@@ -80,6 +80,17 @@ public class UserController {
         );
     }
 
+    @Operation(summary = "Update user profile API")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "successful response"),
+            @ApiResponse(responseCode = "404", description = "user not found exception")
+    })
+    @DeleteMapping("{username}")
+    public ResponseDto<?> deleteUser(@PathVariable("username") String username) {
+        this.userService.deleteUser(username);
+        return ResponseDto.ok().setPayload("User deleted.");
+    }
+
     private UserDto signupRequestToDto(UserSignupRequest signupRequest) {
         return new UserDto()
                 .setId(signupRequest.getId())

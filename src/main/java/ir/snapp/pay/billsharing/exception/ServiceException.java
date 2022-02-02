@@ -15,14 +15,14 @@ public class ServiceException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
     private final HttpStatus status;
-    private Map<String, String> details;
+    private Object details;
 
     public ServiceException(String message, HttpStatus status) {
         super(message);
         this.status = status;
     }
 
-    public ServiceException(String message, HttpStatus status, Map<String, String> details) {
+    public ServiceException(String message, HttpStatus status, Object details) {
         super(message);
         this.status = status;
         this.details = details;

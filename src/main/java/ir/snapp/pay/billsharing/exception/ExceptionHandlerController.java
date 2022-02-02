@@ -42,16 +42,19 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        LOGGER.error(ex.getMessage(), ex);
         return new ResponseEntity<>(ExceptionUtils.makeExceptionResponseFromBindException(ex, request), HttpStatus.BAD_REQUEST);
     }
 
     @Override
     protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        LOGGER.error(ex.getMessage(), ex);
         return new ResponseEntity<>(ExceptionUtils.makeExceptionResponseFromBindException(ex, request), HttpStatus.BAD_REQUEST);
     }
 
     @Override
     protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        LOGGER.error(ex.getMessage(), ex);
         return new ResponseEntity<>(
                 ExceptionUtils.makeExceptionResponse(
                         HttpStatus.BAD_REQUEST.getReasonPhrase(),
@@ -62,6 +65,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        LOGGER.error(ex.getMessage(), ex);
         return new ResponseEntity<>(
                 ExceptionUtils.makeExceptionResponse(
                         HttpStatus.BAD_REQUEST.getReasonPhrase(),
@@ -72,6 +76,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        LOGGER.error(ex.getMessage(), ex);
         return new ResponseEntity<>(
                 ExceptionUtils.makeExceptionResponse(
                         HttpStatus.NOT_FOUND.getReasonPhrase(),
@@ -82,6 +87,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        LOGGER.error(ex.getMessage(), ex);
         ExceptionResponseDto exceptionResponse;
         if (ex.getMostSpecificCause() == null) {
             exceptionResponse = ExceptionUtils.makeExceptionResponse(
@@ -99,16 +105,18 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        LOGGER.error(ex.getMessage(), ex);
         return new ResponseEntity<>(
                 ExceptionUtils.makeExceptionResponse(
                         HttpStatus.METHOD_NOT_ALLOWED.getReasonPhrase(),
-                        Map.of(ex.getMethod(), "method is not supported"),
+                        Map.of(ex.getMethod() + " method", "is not supported"),
                         getRequestPathFromWebRequest(request)),
                 HttpStatus.METHOD_NOT_ALLOWED);
     }
 
     @Override
     protected ResponseEntity<Object> handleHttpMediaTypeNotSupported(HttpMediaTypeNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        LOGGER.error(ex.getMessage(), ex);
         String mediaType = ex.getContentType() != null ? ex.getContentType().getType() : "NULL";
         return new ResponseEntity<>(
                 ExceptionUtils.makeExceptionResponse(
@@ -120,6 +128,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ExceptionResponseDto> handleBadRequest(DataIntegrityViolationException ex, WebRequest request) {
+        LOGGER.error(ex.getMessage(), ex);
         ExceptionResponseDto exceptionResponse;
         if (ex.getMostSpecificCause() == null) {
             exceptionResponse = ExceptionUtils.makeExceptionResponse(
@@ -138,19 +147,23 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ExceptionResponseDto> handleConstraintViolation(ConstraintViolationException ex, WebRequest request) {
+        LOGGER.error(ex.getMessage(), ex);
         return new ResponseEntity<>(ExceptionUtils.makeExceptionResponseFromConstraintViolation(ex, request), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ServiceException.class)
     public ResponseEntity<ExceptionResponseDto> handleServiceException(ServiceException ex, WebRequest request) {
+        LOGGER.error(ex.getMessage(), ex);
         return new ResponseEntity<>(ExceptionUtils.convertToExceptionResponse(ex, request), ex.getStatus());
     }
 
     @ExceptionHandler(Throwable.class)
     public ResponseEntity<ExceptionResponseDto> handleInternalErrors(Throwable ex, WebRequest request) {
+        LOGGER.error(ex.getMessage(), ex);
         ExceptionResponseDto exceptionResponse = new ExceptionResponseDto();
-        exceptionResponse.setMessage(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
-        exceptionResponse.addError("cause", ex.getMessage());
+        exceptionResponse.setError(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
+//        exceptionResponse.addDetail("cause", ex.getMessage());
+        exceptionResponse.setDetails(Map.of("cause", ex.getMessage()));
         exceptionResponse.setPath(getRequestPathFromWebRequest(request));
         return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }

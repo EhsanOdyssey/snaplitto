@@ -2,7 +2,6 @@ package ir.snapp.pay.billsharing.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
@@ -20,17 +19,17 @@ public class ExceptionResponseDto implements Serializable {
 
     private Date timestamp;
     private String path;
-    private String message;
-    private Map<String, String> errors;
+    private String error;
+    private Object details;
 
     public ExceptionResponseDto() {
         this.timestamp = new Date();
     }
 
-    public void addError(String name, String error) {
-        if (errors == null) {
-            this.errors = new HashMap<>();
-        }
-        this.errors.put(name, error);
-    }
+//    public void addDetail(String name, String error) {
+//        if (details == null) {
+//            this.details = new HashMap<>();
+//        }
+//        this.details.put(name, error);
+//    }
 }

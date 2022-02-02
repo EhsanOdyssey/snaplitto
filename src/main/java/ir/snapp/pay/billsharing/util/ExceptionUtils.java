@@ -8,6 +8,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
 import javax.validation.ConstraintViolationException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -25,36 +26,40 @@ public final class ExceptionUtils {
 
     public static ExceptionResponseDto makeExceptionResponseFromBindException(BindException ex, WebRequest request) {
         ExceptionResponseDto exceptionResponse = new ExceptionResponseDto();
+        Map<String, String> details = new HashMap<>();
         ex.getBindingResult().getFieldErrors()
-                .forEach(e -> exceptionResponse.addError(e.getField(), e.getDefaultMessage()));
+                .forEach(e -> details.put(e.getField(), e.getDefaultMessage()));
         ex.getBindingResult().getGlobalErrors()
-                .forEach(e -> exceptionResponse.addError(e.getObjectName(), e.getDefaultMessage()));
+                .forEach(e -> details.put(e.getObjectName(), e.getDefaultMessage()));
+        exceptionResponse.setDetails(details);
         exceptionResponse.setPath(getRequestPathFromWebRequest(request));
-        exceptionResponse.setMessage(HttpStatus.BAD_REQUEST.getReasonPhrase());
+        exceptionResponse.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
         return exceptionResponse;
     }
 
     public static ExceptionResponseDto makeExceptionResponseFromConstraintViolation(ConstraintViolationException ex, WebRequest request) {
         ExceptionResponseDto exceptionResponse = new ExceptionResponseDto();
+        Map<String, String> details = new HashMap<>();
         ex.getConstraintViolations()
-                .forEach(e -> exceptionResponse.addError(e.getPropertyPath().toString(), e.getMessage()));
+                .forEach(e -> details.put(e.getPropertyPath().toString(), e.getMessage()));
+        exceptionResponse.setDetails(details);
         exceptionResponse.setPath(getRequestPathFromWebRequest(request));
-        exceptionResponse.setMessage(HttpStatus.BAD_REQUEST.getReasonPhrase());
+        exceptionResponse.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
         return exceptionResponse;
     }
 
     public static ExceptionResponseDto makeExceptionResponse(String message, Map<String, String> errors, String path) {
         ExceptionResponseDto exceptionResponse = new ExceptionResponseDto();
-        exceptionResponse.setMessage(message);
-        exceptionResponse.setErrors(errors);
+        exceptionResponse.setError(message);
+        exceptionResponse.setDetails(errors);
         exceptionResponse.setPath(path);
         return exceptionResponse;
     }
 
     public static ExceptionResponseDto convertToExceptionResponse(ServiceException ex, WebRequest request) {
         ExceptionResponseDto exceptionResponse = new ExceptionResponseDto();
-        exceptionResponse.setMessage(ex.getMessage());
-        exceptionResponse.setErrors(ex.getDetails());
+        exceptionResponse.setError(ex.getMessage());
+        exceptionResponse.setDetails(ex.getDetails());
         exceptionResponse.setPath(getRequestPathFromWebRequest(request));
         return exceptionResponse;
     }
