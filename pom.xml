@@ -12,8 +12,8 @@
 
     <licenses>
         <license>
-            <name>Snapp License</name>
-            <url>https://snapp.ir/</url>
+            <name>Snapp License, version 1.0</name>
+            <url>https://snapp.ir/licenses/LICENSE-1.0</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
@@ -23,6 +23,7 @@
             <id>ehsan.odyssey</id>
             <email>ehsan.odysseyb@gmail.com</email>
             <name>AmirEhsan Shamirzaloo</name>
+            <organization>Placelessness Kingdom</organization>
             <timezone>Asia/Tehran</timezone>
             <roles>
                 <role>Back-End Developer</role>

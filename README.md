@@ -3,17 +3,23 @@
   Snaplitto
   <br>
 </h1>
-<h3 align="center">Snaplitto - Sharing bills with friends</h3>
-<h4 align="center">An RESTful web service that splits bills (such as trip and restaurants) to your friends written in Spring boot and MySQL database.</h4>
+<h3 align="center">Share bills with your friends</h3>
+<h4 align="center">An RESTful web service that splits bills (such as trip and restaurants) and shares them with your friends written in Spring boot and MySQL database.</h4>
 <p align="center">
     <a alt="Java">
-        <img src="https://img.shields.io/badge/Java-v11-orange.svg">
+        <img src="https://img.shields.io/badge/Java-v11-red.svg">
     </a>
     <a alt="Spring Boot">
-        <img src="https://img.shields.io/badge/Spring%20Boot-v2.5.1-brightgreen.svg" />
+        <img src="https://img.shields.io/badge/Spring%20Boot-v2.5.1-magenta.svg" />
+    </a>
+    <a alt="MySQL">
+        <img src="https://img.shields.io/badge/MySQL-v8.0.23-white.svg" />
     </a>
     <a alt="Docker">
-        <img src="https://img.shields.io/badge/Docker-v19-yellowgreen.svg" />
+        <img src="https://img.shields.io/badge/Docker-v20-cyan.svg" />
+    </a>
+    <a alt="Swagger">
+        <img src="https://img.shields.io/badge/Swagger-v3-blue.svg" />
     </a>
 </p>
 
@@ -62,7 +68,7 @@ All the models are under **_model_** package and their DTOs are under the **_dto
 The data access objects (DAOs) are present in the **_repository_** package. They are classes that use CrudRepository interface to helping the service layer to CRUD on the data from MySQL database. The service layer is defined under the **_service_** package.
 
 **_Security_**
-The security setting are under the **_config_** package and **_security_** package. For the REST APIs I have used JWT token based authentication mechanism.
+The security setting are under the **_config_** package and **_security_** package. For the REST APIs I have used JWT token based authentication mechanism that validate token by OAuth server by introspect endpoint and get client credential token from OAuth server to communicate with other microservices.
 
 **_Exception-Handling_**
 I have used ControllerAdvice feature of the Spring framework to handle the Runtime exceptions that is presenting under **_exception_** package. All exceptions that thrown by the service layer is wrapped by the **_ServiceException_** class and then handled by controller advice for presenting in UI in single view of exceptions.
