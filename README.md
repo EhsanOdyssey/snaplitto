@@ -1,11 +1,10 @@
-# snaplitto
-An RESTful web service that splits bills (such as trip and restaurants) to your friends written in Spring boot.
 <h1 align="center">
   <br>
   Snaplitto
   <br>
 </h1>
-<h4 align="center">Snaplitto - Sharing bills with friends with Spring boot and MYSQL database.</h4>
+<h3 align="center">Snaplitto - Sharing bills with friends</h3>
+<h4 align="center">An RESTful web service that splits bills (such as trip and restaurants) to your friends written in Spring boot and MySQL database.</h4>
 <p align="center">
     <a alt="Java">
         <img src="https://img.shields.io/badge/Java-v11-orange.svg">
