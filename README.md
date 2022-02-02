@@ -1,7 +1,11 @@
 <h1 align="center">
-  <br>
-  Snaplitto
-  <br>
+    <br>
+    <a>
+        <img src="https://github.com/EhsanOdyssey/snaplitto/blob/master/docs/images/snapp.png" alt="Snapp!">
+    </a>
+    <br>
+    Snaplitto
+    <br>
 </h1>
 <h3 align="center">Share bills with your friends</h3>
 <h4 align="center">An RESTful web service that splits bills (such as trip and restaurants) and shares them with your friends written in Spring boot and MySQL database.</h4>
