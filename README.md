@@ -23,6 +23,10 @@ An RESTful web service that splits bills (such as trip and restaurants) to your 
 2. [Application](#Application)
 3. [Technology](#Technology)
 4. [Application Structure](#Application-Structure)
+5. [Running the server locally](#Running-the-server-locally)
+6. [Running the server as Docker Container](#Running-the-server-as-Docker-Container)
+7. [API Documentation](#API-Documentation)
+8. [Contributors](#Contributors)
 
 ## Philosophy ##
 This application work with Spring boot and MySQL db. A sample application to sharing bills with your friend.
@@ -47,3 +51,67 @@ Following libraries were used during the development of this application:
 - **JWT** - Authentication mechanism for REST APIs
 
 ## Application Structure ##
+Spring Boot is a framework that make our life very easy because we don't need to choose the versions of different dependencies based on the version of Spring framework, all taken care by the Spring boot.
+
+**_Controller_**
+This layer is related to all APIs that this service is produces for the UI service. This layer present in the **_controller_** package. For now, I have used **_v1_** package for the first version of the APIs. The request classes are located under the **_request_** package. The request classes converted to DTOs to prepare the service layer data. 
+
+**_Models & DTOs_**
+All the models are under **_model_** package and their DTOs are under the **_dto_** package. The Models used for DAO layer and DTOs let to transfer only the data that we need to share with the user. The mapping of the models to the DTOs handled using ModelMapper utility.
+
+**_DAOs_**
+The data access objects (DAOs) are present in the **_repository_** package. They are classes that use CrudRepository interface to helping the service layer to CRUD on the data from MySQL database. The service layer is defined under the **_service_** package.
+
+**_Security_**
+The security setting are under the **_config_** package and **_security_** package. For the REST APIs I have used JWT token based authentication mechanism.
+
+**_Exception-Handling_**
+I have used ControllerAdvice feature of the Spring framework to handle the Runtime exceptions that is presenting under **_exception_** package. All exceptions that thrown by the service layer is wrapped by the **_ServiceException_** class and then handled by controller advice for presenting in UI in single view of exceptions.
+
+**_Custom-Validation-Constraints_**
+The @Phone custom validation constraint used for validate mobile number on username field that used the Google's libphonenumber library for validation. The related classes are under **_validator_** package.
+
+## Running the server locally ##
+To be able to run this app you will need to do the below:
+
+1. If you have MySQL database on your computer
+2. To run the Spring Boot app from command line in a Terminal window, run the below command:
+
+```
+mvn clean package -P dev
+```
+
+```
+java -jar target/snaplitto.jar
+```
+
+You can also use Maven plugin to run the app by the below command:
+
+```
+mvn clean -P dev spring-boot:run
+```
+
+3. You can access to the APIs by the below base URL in **_dev_** profile
+
+http://localhost:8020
+
+## Running the server as Docker Container ##
+Another alternative to run the application is to use the docker-compose.yml file:
+
+```
+docker-compose build
+```
+
+Command to run the application :
+
+```
+docker-compose up
+```
+
+## API Documentation ##
+The service APIs documents are available in a readable manner by swagger that I have used springdoc-openapi library. You can open the same inside a browser at the following url:
+
+http://localhost:8020/swagger-ui.html
+
+## Contributors ##
+[AmirEhsan Shahmirzaloo](https://linkedin.com/in/ehsan-shahmirzaloo)
