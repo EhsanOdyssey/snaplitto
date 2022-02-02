@@ -1,0 +1,13 @@
+language: java
+jdk:
+  - openjdk11
+services:
+  - docker
+
+before_install:
+  - mvn clean
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker pull adoptopenjdk/openjdk11:latest
+
+script:
+  - ./mvnw 

@@ -1,0 +1,52 @@
+version: '3.5'
+services:
+  db:
+    image: mysql:8.0.23
+    container_name: snaplitto-db
+    volumes:
+      - ~/mysql:/var/lib/mysql
+    ports:
+      - 3306:3306
+    networks:
+      - net
+    environment:
+      - MYSQL_ROOT_PASSWORD=aDmpAswd123
+      - MYSQL_DATABASE=snaplitto
+      - MYSQL_USER=snp
+      - MYSQL_PASSWORD=pAswd123
+      - MYSQL_ROOT_HOST="%"
+    command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: "mysqladmin ping -h localhost"
+      interval: 1s
+      timeout: 1s
+      retries: 60
+    restart: always
+  service_api:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: snaplitto-service-api
+    depends_on:
+      - db
+    links:
+      - db
+    environment:
+      - DB_PORT=3306
+      - DB_NAME=snaplitto
+      - DB_HOST=snaplitto-db
+      - MYSQL_USER=snp
+      - MYSQL_PASSWORD=pAswd123
+#      - SPRING_PROFILE_ACTIVE=docker
+    working_dir: /app
+    command: [sh, -c, 'mkdir -p ~/logs/; cd /src; mvn clean -P docker spring-boot:run']
+    restart: on-failure
+    ports:
+      - "8020:8020"
+    networks:
+      - net
+    volumes:
+      - "${HOME}/.m2:/root/.m2"
+networks:
+  net:
+    driver: bridge
