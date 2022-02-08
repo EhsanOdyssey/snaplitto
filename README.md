@@ -3,7 +3,7 @@
     <a href="https://snapp.ir">
         <img src="https://github.com/EhsanOdyssey/snaplitto/blob/master/docs/img/snapp.png" alt="Snapp!">
     </a>
-    <br>
+    <hr style="border-top: 5px solid #bbb; border-radius: 2px; padding: 0; margin: 10px 0; height: 0.05em;"/>
     Snaplitto REST APIs
     <br>
 </h1>

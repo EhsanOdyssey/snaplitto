@@ -3,17 +3,18 @@ services:
   db:
     image: mysql:8.0.23
     container_name: snaplitto-db
+    env_file: ./.env
     volumes:
       - ~/mysql:/var/lib/mysql
     ports:
-      - 3306:3306
+      - $SNAPLITTO_DB_INTERNAL_PORT:$SNAPLITTO_DB_EXTERNAL_PORT
     networks:
       - net
     environment:
-      - MYSQL_ROOT_PASSWORD=aDmpAswd123
-      - MYSQL_DATABASE=snaplitto
-      - MYSQL_USER=snp
-      - MYSQL_PASSWORD=pAswd123
+      - MYSQL_ROOT_PASSWORD=$DB_ROOT_PASSWORD
+      - MYSQL_DATABASE=$DB_NAME
+      - MYSQL_USER=$DB_USER
+      - MYSQL_PASSWORD=$DB_PASSWORD
       - MYSQL_ROOT_HOST="%"
     command: --default-authentication-plugin=mysql_native_password
     healthcheck:
@@ -23,26 +24,30 @@ services:
       retries: 60
     restart: always
   service_api:
-    build:
-      context: ./
-      dockerfile: Dockerfile
-    container_name: snaplitto-service-api
     depends_on:
       - db
     links:
       - db
-    environment:
-      - DB_PORT=3306
-      - DB_NAME=snaplitto
-      - DB_HOST=snaplitto-db
-      - MYSQL_USER=snp
-      - MYSQL_PASSWORD=pAswd123
-#      - SPRING_PROFILE_ACTIVE=docker
-    working_dir: /app
-    command: [sh, -c, 'mkdir -p ~/logs/; cd /src; mvn clean -P docker spring-boot:run']
-    restart: on-failure
+    image: 'snapp-pay/snaplitto:latest'
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      args:
+        SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+    container_name: snaplitto-service-api
+    env_file: ./.env
     ports:
-      - "8020:8020"
+      - $SNAPLITTO_SERVICE_API_INTERNAL_PORT:$SNAPLITTO_SERVICE_API_EXTERNAL_PORT
+    restart: on-failure
+    environment:
+      - DB_HOST=snaplitto-db
+      - DB_PORT=$SNAPLITTO_DB_EXTERNAL_PORT
+      - DB_NAME=$DB_NAME
+      - DB_USER=$DB_USER
+      - DB_PASSWORD=$DB_PASSWORD
+      - SPRING_PROFILES_ACTIVE=$SPRING_PROFILES_ACTIVE
+#    working_dir: /app
+#    command: [sh, -c, 'mkdir -p ~/logs/; cd /src; mvn clean -P docker spring-boot:run']
     networks:
       - net
     volumes:

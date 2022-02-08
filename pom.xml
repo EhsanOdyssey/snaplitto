@@ -42,6 +42,10 @@
         <url>https://github.com/EhsanOdyssey/snaplitto/issues</url>
     </issueManagement>
 
+    <!--
+        add maven wrapper to application with below command:
+        mvn -N io.takari:maven:0.7.7:wrapper
+    -->
     <properties>
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -144,7 +148,7 @@
     </profiles>
 
     <build>
-        <finalName>${artifactId}</finalName>
+        <finalName>${project.artifactId}</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -160,41 +164,56 @@
                     <profiles>
                         <profile>${activeProfile}</profile>
                     </profiles>
+                    <layers>
+                        <enabled>true</enabled>
+                        <includeLayerTools>true</includeLayerTools>
+<!--                        <configuration>${project.basedir}/src/layers.xml</configuration>-->
+                    </layers>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>dockerfile-maven-plugin</artifactId>
-                <version>1.4.9</version>
                 <executions>
                     <execution>
-                        <id>default</id>
-                        <phase>install</phase>
                         <goals>
-                            <goal>build</goal>
-                            <goal>push</goal>
+                            <goal>repackage</goal>
                         </goals>
+                        <configuration>
+                            <mainClass>ir.snapp.pay.billsharing.BillSharingApp</mainClass>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-<!--                    <contextDirectory>${project.basedir}</contextDirectory>-->
-                    <repository>${docker.image.prefix}/${project.artifactId}</repository>
-                    <tag>${project.version}</tag>
-                    <serverId>index.docker.io</serverId>
-                    <registeryUrl>https://index.docker.io:443/v1/</registeryUrl>
-                    <buildArgs>
-                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
-                    </buildArgs>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>javax.activation</groupId>
-                        <artifactId>javax.activation-api</artifactId>
-                        <version>1.2.0</version>
-                        <scope>compile</scope>
-                    </dependency>
-                </dependencies>
             </plugin>
+<!--            <plugin>-->
+<!--                <groupId>com.spotify</groupId>-->
+<!--                <artifactId>dockerfile-maven-plugin</artifactId>-->
+<!--                <version>1.4.9</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>default</id>-->
+<!--                        <phase>install</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>build</goal>-->
+<!--                            <goal>push</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--                <configuration>-->
+<!--&lt;!&ndash;                    <contextDirectory>${project.basedir}</contextDirectory>&ndash;&gt;-->
+<!--                    <repository>${docker.image.prefix}/${project.artifactId}</repository>-->
+<!--                    <tag>${project.version}</tag>-->
+<!--                    <serverId>index.docker.io</serverId>-->
+<!--                    <registeryUrl>https://index.docker.io:443/v1/</registeryUrl>-->
+<!--                    <buildArgs>-->
+<!--                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>-->
+<!--                    </buildArgs>-->
+<!--                </configuration>-->
+<!--                <dependencies>-->
+<!--                    <dependency>-->
+<!--                        <groupId>javax.activation</groupId>-->
+<!--                        <artifactId>javax.activation-api</artifactId>-->
+<!--                        <version>1.2.0</version>-->
+<!--                        <scope>compile</scope>-->
+<!--                    </dependency>-->
+<!--                </dependencies>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 </project>
