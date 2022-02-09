@@ -105,16 +105,18 @@ mvn clean -P dev spring-boot:run
 http://localhost:8020
 
 ## Running the server as Docker Container ##
-Another alternative to run the application is to use the docker-compose.yml file:
+Another alternative to run the application is to use the docker-compose.yml file, because I used Experimental Features of the Docker you can use the below commands to up application. For changing the environment variables in creating image and container please changes the values of **_.env_** file in root of application:
+
+To Build image use below command:
 
 ```
-docker-compose build
+COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose build
 ```
 
-Command to run the application :
+Command to run the application:
 
 ```
-docker-compose up
+COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose up
 ```
 
 ## API Documentation ##
